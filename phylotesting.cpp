@@ -1937,7 +1937,9 @@ void performAUTest(Params &params, PhyloTree *tree, double *pattern_lhs, vector<
             for (tid = 0; tid < ntrees; tid++) {
                 double *pattern_lh = pattern_lhs + (tid*maxnptn);
                 double tree_lh;
-#ifdef BINARY32
+#ifdef __NOSSE__
+                tree_lh = tree->dotProduct(pattern_lh, boot_sample_dbl, nptn);
+#elseif defined(BINARY32) || defined(__NOAVX__)
                 tree_lh = tree->dotProductSIMD<double, Vec2d, 2>(pattern_lh, boot_sample_dbl, nptn);
 #else
                 if (instruction_set >= 7)

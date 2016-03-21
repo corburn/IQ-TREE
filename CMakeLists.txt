@@ -234,7 +234,10 @@ elseif (ICC)
 endif()
 
 SET(SSE_FLAGS "")
-if (VCC)
+if (IQTREE_FLAGS MATCHES "nosse")
+    # do not set SSE_FLAGS
+    add_definitions(-D__NOSSE__)
+elseif (VCC)
 	set(SSE_FLAGS "/arch:SSE2 -D__SSE3__")
 elseif (GCC OR CLANG)
 	set(SSE_FLAGS "-msse3")
@@ -272,10 +275,11 @@ elseif (IQTREE_FLAGS MATCHES "avx") # AVX instruction set
 	set(COMBINED_FLAGS "${COMBINED_FLAGS} ${AVX_FLAGS}")
 
 	SET(EXE_SUFFIX "${EXE_SUFFIX}-avx")
-else() #SSE intruction set
+elseif (NOT IQTREE_FLAGS MATCHES "nosse") #SSE intruction set
 	message("Vectorization : SSE3")
 	add_definitions(-D__SSE3)
-
+else()
+	message("Vectorization : no-SSE")
 endif()
 
 
@@ -361,6 +365,10 @@ if (NOT BINARY32 AND NOT IQTREE_FLAGS MATCHES "novx")
 add_library(avxkernel phylotreeavx.cpp)
 endif()
 
+if (NOT IQTREE_FLAGS MATCHES "nosse")
+add_library(ssekernel phylotreesse3.cpp)
+endif()
+
 add_executable(iqtree
 alignment.cpp
 alignmentpairwise.cpp
@@ -444,6 +452,9 @@ if (NOT IQTREE_FLAGS MATCHES "avx" AND NOT IQTREE_FLAGS MATCHES "fma")
 	if (NOT BINARY32 AND NOT IQTREE_FLAGS MATCHES "novx")
 		set_target_properties(avxkernel pllavx PROPERTIES COMPILE_FLAGS "${AVX_FLAGS}")
 	endif()
+	if (NOT IQTREE_FLAGS MATCHES "nosse")
+		set_target_properties(ssekernel PROPERTIES COMPILE_FLAGS "${SSE_FLAGS}")
+	endif()
 endif()  
 
 ##################################################################
@@ -484,11 +495,20 @@ if (IQTREE_FLAGS MATCHES "omp")
 	endif()
 endif()
 
-if (BINARY32 OR IQTREE_FLAGS MATCHES "novx")
-    target_link_libraries(iqtree pll ncl lbfgsb whtest sprng vectorclass model gsl ${PLATFORM_LIB} ${STD_LIB} ${THREAD_LIB})	
-else()
-    target_link_libraries(iqtree pll pllavx ncl lbfgsb whtest sprng vectorclass model avxkernel gsl ${PLATFORM_LIB} ${STD_LIB} ${THREAD_LIB})	
+set(PLL_AVX_LIB "")
+set(AVX_LIB "")
+if (NOT BINARY32 AND NOT IQTREE_FLAGS MATCHES "novx")
+    set(PLL_AVX_LIB "pllavx")
+    set(AVX_LIB "avxkernel")
 endif()
+
+set(SSE_LIB "")
+if (NOT IQTREE_FLAGS MATCHES "nosse")
+    set(SSE_LIB "ssekernel")
+endif()
+
+
+target_link_libraries(iqtree pll ncl lbfgsb whtest sprng vectorclass model gsl ${SSE_LIB} ${AVX_LIB} ${PLL_AVX_LIB} ${PLATFORM_LIB} ${STD_LIB} ${THREAD_LIB})	
 
 ##################################################################
 # setup the executable name 

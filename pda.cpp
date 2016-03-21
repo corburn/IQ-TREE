@@ -2249,7 +2249,11 @@ int main(int argc, char *argv[])
 #if defined(BINARY32) || defined(__NOAVX__)
     instruction_set = min(instruction_set, 6);
 #endif
-	if (instruction_set < 3) outError("Your CPU does not support SSE3!");
+
+#ifdef __NOSSE__
+    instruction_set = min(instruction_set, 0);
+#endif
+//	if (instruction_set < 3) outError("Your CPU does not support SSE3!");
 	bool has_fma3 = (instruction_set >= 7) && hasFMA3();
 	bool has_fma4 = (instruction_set >= 7) && hasFMA4();
 
@@ -2262,6 +2266,9 @@ int main(int argc, char *argv[])
 
 	cout << "Host:    " << hostname << " (";
 	switch (instruction_set) {
+    case 0:
+    case 1:
+	case 2: cout << "no SIMD, "; break;
 	case 3: cout << "SSE3, "; break;
 	case 4: cout << "SSSE3, "; break;
 	case 5: cout << "SSE4.1, "; break;

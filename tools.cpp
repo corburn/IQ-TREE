@@ -797,8 +797,15 @@ void parseArg(int argc, char *argv[], Params &params) {
     params.aLRT_test = false;
     params.aBayes_test = false;
     params.localbp_replicates = 0;
+
+#ifdef __NOSSE__
+    params.SSE = LK_EIGEN;
+    params.lk_no_avx = true;
+#else
     params.SSE = LK_EIGEN_SSE;
     params.lk_no_avx = false;
+#endif
+
     params.print_site_lh = WSL_NONE;
     params.print_site_state_freq = 0;
     params.print_site_rate = false;

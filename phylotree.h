@@ -497,6 +497,12 @@ public:
 #else
     void setDotProductAVX();
 #endif
+
+#if defined(__NOSSE__)
+    void setDotProductSSE3() {}
+#else
+    void setDotProductSSE3();
+#endif
     /**
             this function return the parsimony or likelihood score of the tree. Default is
             to compute the parsimony score. Override this function if you define a new
@@ -575,6 +581,12 @@ public:
     virtual void setParsimonyKernelAVX() {}
 #else
     virtual void setParsimonyKernelAVX();
+#endif
+
+#if defined(__NOSSE__)
+    virtual void setParsimonyKernelSSE3() {}
+#else
+    virtual void setParsimonyKernelSSE3();
 #endif
     /**
             SLOW VERSION: compute the parsimony score of the tree, given the alignment
@@ -1546,6 +1558,13 @@ public:
 #else
     virtual void setLikelihoodKernelAVX();
 #endif
+
+#if defined(__NOSSE__)
+    virtual void setLikelihoodKernelSSE3() {}
+#else
+    virtual void setLikelihoodKernelSSE3();
+#endif
+
     /****************************************************************************
             Public variables
      ****************************************************************************/
