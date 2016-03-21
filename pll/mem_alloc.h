@@ -35,7 +35,11 @@
         #define rax_free _aligned_free
     #endif
 #else
-    #define rax_posix_memalign posix_memalign
+    #ifdef __NOSSE__
+        #define rax_posix_memalign(ptr,alignment,size) *(ptr) = malloc(size)
+    #else
+        #define rax_posix_memalign posix_memalign
+    #endif
     #define rax_malloc malloc
     #define rax_calloc calloc
     #define rax_free free

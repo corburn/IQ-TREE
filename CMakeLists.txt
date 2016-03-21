@@ -179,10 +179,6 @@ else()
 	message("Target binary : 64-bit")
 endif()
 
-if(IQTREE_FLAGS MATCHES "novx") 
-    add_definitions(-D__NOAVX__)
-endif()
-
 ##################################################################
 # configure OpenMP/PThreads compilation
 # change the executable name if compiled for OpenMP parallel version
@@ -238,6 +234,8 @@ if (IQTREE_FLAGS MATCHES "nosse")
     # do not set SSE_FLAGS
     add_definitions(-D__NOSSE__)
     set(SSE_FLAGS "-mno-sse")
+    #nosse implies novx (no-AVX)
+    set(IQTREE_FLAGS "${IQTREE_FLAGS} novx")
 elseif (VCC)
 	set(SSE_FLAGS "/arch:SSE2 -D__SSE3__")
 elseif (GCC OR CLANG)
@@ -249,6 +247,11 @@ elseif (ICC)
 		set(SSE_FLAGS "-msse3")
 	endif()
 endif()
+
+if(IQTREE_FLAGS MATCHES "novx") 
+    add_definitions(-D__NOAVX__)
+endif()
+
 
 if (IQTREE_FLAGS MATCHES "fma") # AVX+FMA instruction set
  	message("Vectorization : AVX+FMA")
