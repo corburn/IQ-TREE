@@ -483,6 +483,16 @@ public:
     /****************************************************************************
             Dot product
      ****************************************************************************/
+
+    template <class Numeric>
+    Numeric dotProductNaive(Numeric *x, Numeric *y, int size) {
+        assert(size > 0);
+        Numeric res = x[0]*y[0];
+        for (int i = 0; i < size; i++)
+            res += x[i]*y[i];
+        return res;
+    }
+
     template <class Numeric, class VectorClass, const int VCSIZE>
     Numeric dotProductSIMD(Numeric *x, Numeric *y, int size);
 
@@ -492,6 +502,10 @@ public:
     typedef double (PhyloTree::*DotProductDoubleType)(double *x, double *y, int size);
     DotProductDoubleType dotProductDouble;
 
+    double dotProductDoubleCall(double *x, double *y, int size) {
+        return (this->*dotProductDouble)(x, y, size);
+    }
+
 #if defined(BINARY32) || defined(__NOAVX__)
     void setDotProductAVX() {}
 #else
@@ -499,7 +513,14 @@ public:
 #endif
 
 #if defined(__NOSSE__)
-    void setDotProductSSE3() {}
+    void setDotProductSSE3() {
+#ifdef BOOT_VAL_FLOAT
+        dotProduct = &PhyloTree::dotProductNaive<float>;
+#else
+        dotProduct = &PhyloTree::dotProductNaive<double>;
+#endif
+        dotProductDouble = &PhyloTree::dotProductNaive<double>;
+    }
 #else
     void setDotProductSSE3();
 #endif

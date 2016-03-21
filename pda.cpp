@@ -65,7 +65,7 @@
 #include "timeutil.h"
 //#include <unistd.h>
 #include <stdlib.h>
-#include "vectorclass/vectorclass.h"
+#include "vectorclass/instrset.h"
 
 #ifdef _OPENMP
 	#include <omp.h>
@@ -2245,17 +2245,24 @@ int main(int argc, char *argv[])
 	//fgets(hostname, sizeof(hostname), pfile);
 	//pclose(pfile);
 
+#ifdef __NOSSE__
+    instruction_set = 0;
+#else
 	instruction_set = instrset_detect();
+#endif
+
 #if defined(BINARY32) || defined(__NOAVX__)
     instruction_set = min(instruction_set, 6);
 #endif
 
-#ifdef __NOSSE__
-    instruction_set = min(instruction_set, 0);
-#endif
 //	if (instruction_set < 3) outError("Your CPU does not support SSE3!");
+#ifdef __NOSSE__
+	bool has_fma3 = false;
+	bool has_fma4 = false;
+#else
 	bool has_fma3 = (instruction_set >= 7) && hasFMA3();
 	bool has_fma4 = (instruction_set >= 7) && hasFMA4();
+#endif
 
 #ifdef __FMA__
 	bool has_fma =  has_fma3 || has_fma4;

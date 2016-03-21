@@ -8,8 +8,17 @@
  */
 
 #include "phylotree.h"
-#include "vectorclass/vectorclass.h"
 #include "phylosupertree.h"
+
+// naive pop count function, copied from vectorclass
+static inline uint32_t vml_popcnt (uint32_t a) {	
+    // popcnt instruction not available
+    uint32_t b = a - ((a >> 1) & 0x55555555);
+    uint32_t c = (b & 0x33333333) + ((b >> 2) & 0x33333333);
+    uint32_t d = (c + (c >> 4)) & 0x0F0F0F0F;
+    uint32_t e = d * 0x01010101;
+    return   e >> 24;
+}
 
 /***********************************************************/
 /****** optimized version of parsimony kernel **************/

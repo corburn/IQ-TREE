@@ -34,7 +34,6 @@
 
 #include "phyloanalysis.h"
 #include "gsl/mygsl.h"
-#include "vectorclass/vectorclass.h"
 
 
 /******* Binary model set ******/
@@ -1936,17 +1935,18 @@ void performAUTest(Params &params, PhyloTree *tree, double *pattern_lhs, vector<
             int max_tid = -1;
             for (tid = 0; tid < ntrees; tid++) {
                 double *pattern_lh = pattern_lhs + (tid*maxnptn);
-                double tree_lh;
-#ifdef __NOSSE__
-                tree_lh = tree->dotProduct(pattern_lh, boot_sample_dbl, nptn);
-#elseif defined(BINARY32) || defined(__NOAVX__)
-                tree_lh = tree->dotProductSIMD<double, Vec2d, 2>(pattern_lh, boot_sample_dbl, nptn);
-#else
-                if (instruction_set >= 7)
-                    tree_lh = tree->dotProductSIMD<double, Vec4d, 4>(pattern_lh, boot_sample_dbl, nptn);
-                else
-                    tree_lh = tree->dotProductSIMD<double, Vec2d, 2>(pattern_lh, boot_sample_dbl, nptn);
-#endif
+//                double tree_lh;
+                double tree_lh = tree->dotProductDoubleCall(pattern_lh, boot_sample_dbl, nptn);
+//#ifdef __NOSSE__
+//                tree_lh = tree->dotProduct(pattern_lh, boot_sample_dbl, nptn);
+//#elseif defined(BINARY32) || defined(__NOAVX__)
+//                tree_lh = tree->dotProductSIMD<double, Vec2d, 2>(pattern_lh, boot_sample_dbl, nptn);
+//#else
+//                if (instruction_set >= 7)
+//                    tree_lh = tree->dotProductSIMD<double, Vec4d, 4>(pattern_lh, boot_sample_dbl, nptn);
+//                else
+//                    tree_lh = tree->dotProductSIMD<double, Vec2d, 2>(pattern_lh, boot_sample_dbl, nptn);
+//#endif
                 if (tree_lh > max_lh) {
                     max_lh = tree_lh;
                     max_tid = tid;

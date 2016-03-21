@@ -12,10 +12,6 @@
 #include "phylokernelsitemodel.h"
 #include "vectorclass/vectorclass.h"
 
-#ifndef __SSE3__
-#error "You must compile this file with SSE3 enabled!"
-#endif
-
 void PhyloTree::setParsimonyKernelSSE3() {
 	computeParsimonyBranchPointer = &PhyloTree::computeParsimonyBranchFastSIMD<Vec4ui>;
     computePartialParsimonyPointer = &PhyloTree::computePartialParsimonyFastSIMD<Vec4ui>;

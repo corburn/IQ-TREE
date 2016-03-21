@@ -237,6 +237,7 @@ SET(SSE_FLAGS "")
 if (IQTREE_FLAGS MATCHES "nosse")
     # do not set SSE_FLAGS
     add_definitions(-D__NOSSE__)
+    set(SSE_FLAGS "-mno-sse")
 elseif (VCC)
 	set(SSE_FLAGS "/arch:SSE2 -D__SSE3__")
 elseif (GCC OR CLANG)
