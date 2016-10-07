@@ -1,4 +1,4 @@
-language: c
+language: cpp
 
 compiler:
   - clang
@@ -7,10 +7,10 @@ compiler:
 env:
   - OMP_NUM_THREADS=4
 
+# disable the default submodule logic
+git:
+  submodules: false
+
 before_install:
   - echo -e "Host *\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-  - cat ~/.ssh/config
-
-install: true
-
-before_script: 'echo -e "Host *\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config'
+  - git submodule update --init --recursive
