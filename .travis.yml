@@ -46,7 +46,7 @@ git:
 
 # use sed to replace the SSH URL with the public URL, then init and update submodules
 before_install:
-  - echo $PATH
+  - env
   - exit 1
   - sed -i 's|git@git.assembla.com:|git://git.assembla.com/|' .gitmodules
   - git submodule update --init --recursive
