@@ -6,6 +6,11 @@ compiler:
 
 env:
   - OMP_NUM_THREADS=4
+    IQTREE_FLAGS="omp"
+  - OMP_NUM_THREADS=4
+    IQTREE_FLAGS="mpi"
+  - OMP_NUM_THREADS=4
+    IQTREE_FLAGS="omp mpi"
 
 # disable the default submodule logic
 git:
@@ -17,4 +22,4 @@ before_install:
   - git submodule update --init --recursive
 
 install:
-  - mkdir build_vanilla && cd build_vanilla && cmake .. && make && make install
+  - mkdir build && cd build && cmake -DIQTREE_FLAGS="$IQTREE_FLAGS" .. && make && make install
