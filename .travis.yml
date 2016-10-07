@@ -3,3 +3,6 @@ language: cpp
 compiler:
   - clang
   - gcc
+
+before_script:
+  - echo -e "Host git.assembla.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
