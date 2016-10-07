@@ -15,7 +15,14 @@ addons:
   apt:
     sources:
       # https://launchpad.net/~george-edison55/+archive/ubuntu/precise-backports
-      - george-edison55-precise-backports
+      # cmake 3.2.3-5ppa5~precise1
+      # The following packages have unmet dependencies:
+      # cmake : Depends: cmake-data (= 3.2.3-5ppa5~precise1) but 2.8.7-0ubuntu5 is to be installed
+      # E: Unable to correct problems, you have held broken packages.
+      #- george-edison55-precise-backports
+      # https://launchpad.net/~kalakris/+archive/ubuntu/cmake
+      # cmake 2.8.11.2-1ubuntu2~precise1
+      - kalakris-cmake
     packages:
       # CMake 2.8.10 or higher is required.  You are running version 2.8.7
       - cmake
@@ -43,4 +50,4 @@ before_install:
   - git submodule update --init --recursive
 
 install:
-  - mkdir build && cd build && cmake -DIQTREE_FLAGS="$IQTREE_FLAGS" .. && make && make install
+  - mkdir build && cd build && cmake -DIQTREE_FLAGS="$IQTREE_FLAGS" .. && make -j$(nproc) && make install
