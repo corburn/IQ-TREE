@@ -1,5 +1,22 @@
 language: cpp
 
+# https://jonasw.de/blog/2015/07/22/develop/cplusplus14-on-travis-with-cmake/
+#addons:
+#  apt:
+#    sources:
+#      - llvm-toolchain-precise
+#      - ubuntu-toolchain-r-test
+#    packages:
+#      - clang-3.7
+#      - g++-5
+#      - gcc-5
+
+addons:
+  apt:
+    packages:
+      # CMake 2.8.10 or higher is required.  You are running version 2.8.7
+      - cmake
+
 compiler:
   - clang
   - gcc
@@ -13,6 +30,7 @@ env:
     IQTREE_FLAGS="omp mpi"
 
 # disable the default submodule logic
+# https://gist.github.com/petrbel/c3bf7e0f59c22a52f534
 git:
   submodules: false
 
