@@ -1,8 +1,11 @@
-language: cpp
+language: c
 
 compiler:
   - clang
   - gcc
 
-before_script:
+env:
+  - OMP_NUM_THREADS=4
+
+before_install:
   - echo -e "Host git.assembla.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
