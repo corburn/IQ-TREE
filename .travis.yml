@@ -46,10 +46,8 @@ git:
 
 # use sed to replace the SSH URL with the public URL, then init and update submodules
 before_install:
-  - env
-  - exit 1
   - sed -i 's|git@git.assembla.com:|git://git.assembla.com/|' .gitmodules
   - git submodule update --init --recursive
 
 install:
-  - mkdir build && cd build && cmake -DIQTREE_FLAGS="$IQTREE_FLAGS" -DCMAKE_INSTALL_PREFIX:PATH=$HOME/bin .. && make -j$(nproc) && make install
+  - mkdir build && cd build && cmake -DIQTREE_FLAGS="$IQTREE_FLAGS" -DCMAKE_INSTALL_PREFIX:PATH=$HOME/.local .. && make -j$(nproc) && make install
