@@ -9,3 +9,5 @@ env:
 
 before_install:
   - echo -e "Host *\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+
+install: true
