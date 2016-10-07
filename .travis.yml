@@ -13,6 +13,7 @@ git:
 
 before_install:
   #- echo -e "Host *\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+  # Add git.assembla.com host key
   # ssh-keyscan -t rsa git.assembla.com
   - echo "# git.assembla.com:22 SSH-2.0-OpenSSH_5.9p1 Debian-6-assembla
 git.assembla.com ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAr06hg4ep5IKc85rjYZkEmer+BMkpLfsYi7iOMWytiqyow0jqMiVg7t32a4WW0349QV4rmfcMg5ULuIP//mBjSb2G1jSmqPvWx4JCzZLKu3nmsx1YdBWmVvn/qyVLQ5E+NCSkJJORKqIIgiL1WuAEaxUODYmBExwv1eMZWBpyeKZrrsBEmogKt2Q+igQ31+rb1fQI9/hDE+SktOpT9sWJ9brSDgsQNXAtV52DFDA8mzq7FL+4TbLjDoDdK7v3LFYn2cnN2kD57gW8qvP6V6mrkjc6I2aCNBHwdcIynUQ8HKdU+Sd4u7pZsCCK7odgPCcM5Jj+/PladSR8+DCtvs6JWw==" >> ~/.ssh/known_hosts
