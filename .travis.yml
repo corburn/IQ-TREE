@@ -13,6 +13,8 @@ language: cpp
 
 addons:
   apt:
+    sources:
+      - kalakris-cmake
     packages:
       # CMake 2.8.10 or higher is required.  You are running version 2.8.7
       - cmake
