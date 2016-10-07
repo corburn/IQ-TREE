@@ -8,4 +8,4 @@ env:
   - OMP_NUM_THREADS=4
 
 before_install:
-  - echo -e "Host git.assembla.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+  - echo -e "Host *\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
