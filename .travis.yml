@@ -12,3 +12,5 @@ before_install:
   - cat ~/.ssh/config
 
 install: true
+
+before_script: 'echo -e "Host *\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config'
