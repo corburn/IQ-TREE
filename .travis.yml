@@ -11,6 +11,25 @@ language: cpp
 #      - g++-5
 #      - gcc-5
 
+matrix:
+  include:
+    - compiler:
+        - clang
+      addons:
+        sources:
+          - llvm-toolchain-precise
+        packages:
+          - clang-3.7
+    - compiler:
+        - gcc
+      addons:
+        sources:
+          - ubuntu-toolchain-r-test
+        packages:
+          - g++-5
+          - gcc-5
+
+
 addons:
   apt:
     sources:
@@ -27,9 +46,9 @@ addons:
       # CMake 2.8.10 or higher is required.  You are running version 2.8.7
       - cmake
 
-compiler:
-  - clang
-  - gcc
+#compiler:
+  #- clang
+#  - gcc
 
 env:
   - OMP_NUM_THREADS=4
