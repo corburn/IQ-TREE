@@ -29,7 +29,7 @@ addons:
       - cmake
       - g++-6
       - gcc-6
-      - openmpi
+      - libopenmpi-dev
       # Could NOT find Eigen3 (missing:  EIGEN3_INCLUDE_DIR EIGEN3_VERSION_OK) (Required is at least version "2.91.0")
       - libeigen3-dev
 
