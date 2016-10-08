@@ -23,6 +23,7 @@ addons:
       # https://launchpad.net/~kalakris/+archive/ubuntu/cmake
       # cmake 2.8.11.2-1ubuntu2~precise1
       - kalakris-cmake
+      - ubuntu-toolchain-r-test
     packages:
       # CMake 2.8.10 or higher is required.  You are running version 2.8.7
       - cmake
