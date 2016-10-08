@@ -11,25 +11,6 @@ language: cpp
 #      - g++-5
 #      - gcc-5
 
-matrix:
-  include:
-    - compiler:
-        - clang
-      addons:
-        sources:
-          - llvm-toolchain-precise
-        packages:
-          - clang-3.7
-    - compiler:
-        - gcc
-      addons:
-        sources:
-          - ubuntu-toolchain-r-test
-        packages:
-          - g++-5
-          - gcc-5
-
-
 addons:
   apt:
     sources:
@@ -45,16 +26,19 @@ addons:
     packages:
       # CMake 2.8.10 or higher is required.  You are running version 2.8.7
       - cmake
+      - g++-6
+      - gcc-6
+      - libopenmpi-dev
 
 #compiler:
-  #- clang
+#  - clang
 #  - gcc
 
 env:
-  - OMP_NUM_THREADS=4
-    IQTREE_FLAGS="omp"
-  - OMP_NUM_THREADS=4
-    IQTREE_FLAGS="mpi"
+#  - OMP_NUM_THREADS=4
+#    IQTREE_FLAGS="omp"
+#  - OMP_NUM_THREADS=4
+#    IQTREE_FLAGS="mpi"
   - OMP_NUM_THREADS=4
     IQTREE_FLAGS="omp mpi"
 
@@ -62,6 +46,20 @@ env:
 # https://gist.github.com/petrbel/c3bf7e0f59c22a52f534
 git:
   submodules: false
+
+# use sed to replace the SSH URL with the public URL, then init and update submodules
+before_install:
+  - sed -i 's|git@git.assembla.com:|git://git.assembla.com/|' .gitmodules
+  - git submodule update --init --recursive
+  - mkdir build && cd build
+  - env
+
+install:
+  - cmake -DIQTREE_FLAGS="$IQTREE_FLAGS" -DCMAKE_INSTALL_PREFIX:PATH=$HOME/.local ..
+  - make -j$(nproc)
+  - make install
+
+script: true
 
 # The Build Lifecycle: https://docs.travis-ci.com/user/customizing-the-build
 #
@@ -96,19 +94,6 @@ git:
 # OPTIONAL deploy
 # OPTIONAL after_deploy
 # after_script
-
-# use sed to replace the SSH URL with the public URL, then init and update submodules
-before_install:
-  - sed -i 's|git@git.assembla.com:|git://git.assembla.com/|' .gitmodules
-  - git submodule update --init --recursive
-  - mkdir build && cd build
-
-install:
-  - cmake -DIQTREE_FLAGS="$IQTREE_FLAGS" -DCMAKE_INSTALL_PREFIX:PATH=$HOME/.local ..
-  - make -j$(nproc)
-  - make install
-
-script: true
 
 
 # Hints: https://docs.travis-ci.com/user/languages/c/
