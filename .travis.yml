@@ -66,7 +66,11 @@ install:
   - make -j$(nproc)
   - make install
 
-script: true
+before_script:
+  - cd $TRAVIS_BUILD_DIR/example
+
+script:
+  - iqtree-omp -s example.phy
 
 # The Build Lifecycle: https://docs.travis-ci.com/user/customizing-the-build
 #
