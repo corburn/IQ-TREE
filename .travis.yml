@@ -70,7 +70,8 @@ before_script:
   - cd $TRAVIS_BUILD_DIR/example
 
 script:
-  - iqtree-omp -s example.phy
+  - iqtree-omp -nt 4 -s example.phy -m TEST
+  - iqtree-omp -nt 4 -sp example.nex -m TESTMERGE
 
 # The Build Lifecycle: https://docs.travis-ci.com/user/customizing-the-build
 #
