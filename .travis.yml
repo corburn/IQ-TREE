@@ -30,6 +30,7 @@ addons:
       - g++-6
       - gcc-6
       - libopenmpi-dev
+      - libeigen3-dev
 
 #compiler:
 #  - clang
