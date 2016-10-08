@@ -42,6 +42,8 @@ env:
 #    IQTREE_FLAGS="mpi"
   - OMP_NUM_THREADS=4
     IQTREE_FLAGS="omp mpi"
+    CXX=g++-6
+    CC=gcc-6
 
 # disable the default submodule logic
 # https://gist.github.com/petrbel/c3bf7e0f59c22a52f534
