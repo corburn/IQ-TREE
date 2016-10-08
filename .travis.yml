@@ -29,7 +29,8 @@ addons:
       - cmake
       - g++-6
       - gcc-6
-      - libopenmpi-dev
+      - openmpi
+      # Could NOT find Eigen3 (missing:  EIGEN3_INCLUDE_DIR EIGEN3_VERSION_OK) (Required is at least version "2.91.0")
       - libeigen3-dev
 
 #compiler:
@@ -57,6 +58,8 @@ before_install:
   - git submodule update --init --recursive
   - mkdir build && cd build
   - env
+  - which gcc-6
+  - ls -l /usr/bin
 
 install:
   - cmake -DIQTREE_FLAGS="$IQTREE_FLAGS" -DCMAKE_INSTALL_PREFIX:PATH=$HOME/.local ..
